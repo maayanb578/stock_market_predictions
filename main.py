@@ -4,14 +4,19 @@ from utils import YahooFinanceHistory
 from all_models import *
 from scraping_yahoo_data import scrape_quotes
 
-# data = pd.read_csv("stock_data5.csv")
-
-
-# sorting by first name
-# data.sort_values("Date", inplace=True)
-
-# dropping ALL duplicate values
-# data.drop_duplicates(subset=['Date'], keep=False, inplace=True)
+def clean_df(df):
+    # dropping ALL duplicate values
+    df.drop_duplicates(subset=['Date'], keep=False, inplace=True)
+    # drop unnecessary columns
+    columns_valid = (set(list(df.columns)) - set(['Date', 'Open', 'High', 'Low', 'Close', 'Adj Close', 'Volume']))
+    if columns_valid != set():
+        for col in columns_valid:
+            del df[col]
+    # if mor than 10% of the values is null scrape again
+    null_rows = df.isnull().sum().sum()
+    if null_rows > 1000:
+        symbol = 'AAPL'
+        scrape_quotes(symbol)
 
 # displaying data
 # print(data)
@@ -20,10 +25,12 @@ from scraping_yahoo_data import scrape_quotes
 if __name__ == "__main__":
     # Get data
     # df = YahooFinanceHistory('AAPL', days_back=15000).get_quote()
+    # df =  pd.read_csv('value.txt')
     symbol = 'AAPL'
     scrape_quotes(symbol)
     model_mae_scores = {}
-    df = pd.read_csv('APPL.csv',parse_dates=True, index_col=0)
+    df = pd.read_csv('AAPL.csv')
+    clean_df(df)
     dt_mean_ava_err = decision_tree(df)
     model_mae_scores['decision_tree'] = dt_mean_ava_err
     df = pd.read_csv('stocks_data_30_6.csv')
