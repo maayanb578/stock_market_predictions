@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt
 
-from utils import YahooFinanceHistory
 from all_models import *
 from scraping_yahoo_data import scrape_quotes
 
@@ -24,8 +23,6 @@ def clean_df(df):
 
 if __name__ == "__main__":
     # Get data
-    # df = YahooFinanceHistory('AAPL', days_back=15000).get_quote()
-    # df =  pd.read_csv('value.txt')
     symbol = 'AAPL'
     scrape_quotes(symbol)
     model_mae_scores = {}
@@ -33,7 +30,7 @@ if __name__ == "__main__":
     clean_df(df)
     dt_mean_ava_err = decision_tree(df)
     model_mae_scores['decision_tree'] = dt_mean_ava_err
-    df = pd.read_csv('stocks_data_30_6.csv')
+    df = pd.read_csv('AAPL.csv')
     naive_mean_ava_err = naive(df)
     model_mae_scores['naive'] = naive_mean_ava_err['naive']
     sma20_mean_err = ma20(df)
