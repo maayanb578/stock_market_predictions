@@ -86,7 +86,7 @@ def naive(df):
     plt.legend()
     print(x_train.index.max(), x_valid.index.min(), x_valid.index.max(), x_test.index.min(), x_test.index.max())
 
-    plt.show()
+    # plt.show()
 
     model_mae_scores = {}
 
@@ -118,6 +118,8 @@ def naive(df):
 
 
 def decision_tree(df):
+
+    df['Date'] = pd.to_numeric(pd.to_datetime(df['Date']))
 
     # print the shaped data for developer view
     print(df.shape)
@@ -257,7 +259,7 @@ def dense(df):
     plt.plot(x_test, label='Test')
     plt.legend()
     print(x_train.index.max(), x_valid.index.min(), x_valid.index.max(), x_test.index.min(), x_test.index.max())
-    plt.show()
+    # plt.show()
 
     # Reshape values
     x_train_values = x_train.values.reshape(-1, 1)
